@@ -83,6 +83,39 @@ class Database
 		return $this->action('DELETE', $table, $where);
 	}
 
+	public function insert($table, $fields = [])
+	{
+		$keys = array_keys($fields);
+		$values = '';
+
+		foreach ($fields as $field) {
+			$values .= '?,';
+		}
+		$values = substr($values, 0, -1);
+
+		$sql = "
+			INSERT INTO users
+			('" . implode ("', '", $keys) . "')
+			VALUES ({$values})
+		";
+
+		return !$this->query($sql, $fields)->error();
+	}
+
+	public function update($table, $id, $fields)
+	{
+		$set = '';
+
+		foreach ($fields as $name => $value) {
+			$set .= "{$name} = ?,";
+		}
+		$set = substr($set, 0, -1);
+
+		$sql = "UPDATE {$table} SET {$set} WHERE id = {$id}";
+
+		return !$this->query($sql, $fields)->error();
+	}
+
 	public function results()
 	{
 		return $this->_results;
