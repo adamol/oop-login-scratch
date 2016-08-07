@@ -27,8 +27,8 @@ if (Input::exists() && Token::check(Input::get('token'))) {
 	]);
 
 	if ($validation->passed()) {
-		echo 'passed';
-		// register user
+		Session::flash('success', 'Registration was processed successfully.');
+		header('Location: index.php');
 	} else {
 		echo '<pre>';
 		print_r($validation->errors());
