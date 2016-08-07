@@ -27,6 +27,21 @@ if (Input::exists() && Token::check(Input::get('token'))) {
 	]);
 
 	if ($validation->passed()) {
+		$user = new User;
+		$salt = Hash::salt(32);
+		try {
+			$user->create([
+				'username' => Input::get('username'),
+				'password' => Hash::make(Input::get('password'), $salt),
+				'salt' => $salt,
+				'name' => Input::get('name'),
+				'joined' => date('Y-m-d H:i:s'),
+				'group' => 1,
+			]);
+		} catch (Exception $e) {
+			die($e->getMessage());
+		}
+
 		Session::flash('success', 'Registration was processed successfully.');
 		header('Location: index.php');
 	} else {

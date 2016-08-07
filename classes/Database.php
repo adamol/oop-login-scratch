@@ -42,6 +42,7 @@ class Database
 					$x++;
 				}
 			}
+
 			if ($this->_query->execute()) {
 				$this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
 				$this->_count = $this->_query->rowCount();
@@ -94,8 +95,8 @@ class Database
 		$values = substr($values, 0, -1);
 
 		$sql = "
-			INSERT INTO users
-			('" . implode ("', '", $keys) . "')
+			INSERT INTO {$table}
+			(`" . implode ("`, `", $keys) . "`)
 			VALUES ({$values})
 		";
 
