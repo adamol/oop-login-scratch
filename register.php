@@ -43,7 +43,7 @@ if (Input::exists() && Token::check(Input::get('token'))) {
 		}
 
 		Session::flash('success', 'Registration was processed successfully.');
-		header('Location: index.php');
+		Redirect::to('index.php');
 	} else {
 		echo '<pre>';
 		print_r($validation->errors());
