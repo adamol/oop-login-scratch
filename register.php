@@ -2,8 +2,7 @@
 
 require_once 'core/init.php';
 
-if (Input::exists()) {
-	// echo Input::get('username');
+if (Input::exists() && Token::check(Input::get('token'))) {
 	$validate = new Validate();
 	$validation = $validate->check($_POST, [
 		'username' => [
@@ -31,9 +30,9 @@ if (Input::exists()) {
 		echo 'passed';
 		// register user
 	} else {
-		echo '<pre>' , print_r($validation->errors()), '</pre>';
-		// output errors
-		// leave some form data
+		echo '<pre>';
+		print_r($validation->errors());
+		echo '</pre>';
 	}
 }
 
@@ -57,5 +56,6 @@ if (Input::exists()) {
 		<input type="text" name="name" id="name" value="<?= escape(Input::get('name'));?>">
 	</div>
 
+	<input type="hidden" name="token" value="<?= Token::generate(); ?>">
 	<input type="submit" value="Register">
 </form>
